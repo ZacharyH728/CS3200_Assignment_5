@@ -5,7 +5,7 @@ const url = process.env.DATABASE_URL;
 const client = new MongoClient(url);
 
 client.connect().then(() => {
-    const tweets = client.db("CS3200_Assignment_5").collection("tweets");
+    const tweets = client.db("ieeevisTweets").collection("tweet");
     tweets.aggregate([
         {
             $group: {
