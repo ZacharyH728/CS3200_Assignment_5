@@ -15,20 +15,34 @@ async function main() {
 
         for (let value of distinctValues) {
             const user = await tweets.findOne({ 'user.id': value });
-            await users.insertOne(user.user);
+            try {
+                await users.insertOne(user.user);
+            } catch (err) {
+                console.log("A user with that id already exists");
+            }
+
         }
 
-        await onlyTweets.insertMany(await tweets.find({}).toArray())
-        const results = await onlyTweets.find({}).toArray();
-        for (let tweet of results) {
-            var userId = tweet.user.id;
+        try {
+            await onlyTweets.insertMany(await tweets.find({}).toArray())
+        } catch (err) {
+            console.log("The tweet(s) with that id already exists")
+        }
 
-            await onlyTweets.updateOne({ _id: tweet._id }, { $set: { 'user': userId } });
+        const results = await onlyTweets.find({}).toArray();
+        try {
+            for (let tweet of results) {
+                var userId = tweet.user.id;
+                await onlyTweets.updateOne({ _id: tweet._id }, { $set: { 'user': userId } });
+            }
+        } catch (err) {
         }
 
     } finally {
         client.close();
     }
 }
+
+//add try catch
 
 main();

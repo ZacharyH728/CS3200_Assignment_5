@@ -13,10 +13,16 @@ client.connect().then(() => {
                 followers_count: { $addToSet: "$user.followers_count" },
                 screen_name: { $addToSet: "$user.screen_name" }
             }
+        },
+        {
+            $sort: {
+                followers_count: -1
+            }
+        },
+        {
+            $limit: 10
         }
     ])
-        .sort({ followers_count: -1 })
-        .limit(10)
         .toArray()
         .then(results => {
             results.map(result => {

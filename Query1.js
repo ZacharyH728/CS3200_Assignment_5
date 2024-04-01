@@ -11,6 +11,3 @@ client.connect().then(() => {
         client.close();
     })
 });
-
-
-

@@ -39,7 +39,8 @@ client.connect().then(() => {
                 },
                 {
                     $match: {
-                        retweet_count: { $gt: average + 3 }
+                        retweet_count: { $gt: average },
+                        retweet_count: { $gt: 3 }
                     }
                 },
                 {
